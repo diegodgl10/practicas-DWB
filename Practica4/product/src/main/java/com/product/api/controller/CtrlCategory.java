@@ -1,6 +1,5 @@
 package com.product.api.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -32,14 +31,6 @@ public class CtrlCategory {
 	@Autowired
 	SvcCategory svc;
 
-    /* Lista de categorias. */
-    // private List<Category> lsCategory = new ArrayList<Category>();
-    private List<Category> lsCategory = Arrays.asList(new Category[] {
-    new Category (1, "Linea Blanca", "LB"),
-    new Category (2, "Abarrotes", "Abar"),
-    new Category (3, "Electrónica", "Electr")
-    });
-
     /**
 	 * Regresa un endpoint de todas las categorias.
 	 * @return un endpoint de todas las categorias.
@@ -66,8 +57,8 @@ public class CtrlCategory {
 	public ResponseEntity<String> createCategory(@Valid @RequestBody Category cat, BindingResult bindingResult) {
         String msj = "";
         if (bindingResult.hasErrors()) {
-        	msj = bindingResult.getAllErrors().get(0).getDefaultMessage();
-        	return new ResponseEntity<String>(msj, HttpStatus.BAD_REQUEST);
+			msj = bindingResult.getAllErrors().get(0).getDefaultMessage();
+			return new ResponseEntity<String>(msj, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<String>(svc.createCategory(cat), HttpStatus.OK);
 	}

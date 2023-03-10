@@ -29,13 +29,19 @@ public interface RepoCategory extends JpaRepository<Category, Integer>{
 	
 	@Modifying
 	@Transactional
-	@Query(value = "INSERT INTO category (category,status) VALUES(category,1)", nativeQuery = true)
-	void createCategory(@Param("category") Category category);
+	@Query(value = "INSERT INTO category (category_id,category,acronym,status) "
+				+ "VALUES(:category_id,:category,:acronym,1)", nativeQuery = true)
+	void createCategory(@Param("category_id") Integer category_id,
+						@Param("category") String category,
+						@Param("acronym") String acronym);
 	
 	@Modifying
 	@Transactional
-	@Query(value = "UPDATE category SET category = :category WHERE category_id = :category_id", nativeQuery = true)
-	Integer updateCategory(@Param("category_id") Integer category_id, @Param("category") Category category);
+	@Query(value = "UPDATE category SET category = :category, acronym = :acronym "
+				+ "WHERE category_id = :category_id", nativeQuery = true)
+	Integer updateCategory(@Param("category_id") Integer category_id,
+						@Param("category") String category,
+						@Param("acronym") String acronym);
 	
 	@Modifying
 	@Transactional

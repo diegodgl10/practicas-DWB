@@ -34,7 +34,7 @@ public class SvcCategoryImp implements SvcCategory {
 				return "category already exist";
 			}
 		}
-		repo.createCategory(category);
+		repo.createCategory(category.getCategory_id(), category.getCategory(), category.getAcronym());
 		return "category created";
 	}
 
@@ -49,10 +49,7 @@ public class SvcCategoryImp implements SvcCategory {
 			return "category is not active";
 		}
 		categorySaved = repo.findByCategory(category.getCategory());
-		if (categorySaved != null) {
-			return "category already exist";
-		}
-		repo.updateCategory(category_id, category);
+		repo.updateCategory(category_id, category.getCategory(), category.getAcronym());
 		return "category updated";
 	}
 
