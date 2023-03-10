@@ -11,15 +11,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/category/ListCategories",
+					"raw": "http://localhost:8081/category",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
-						"category",
-						"ListCategories"
+						"category"
 					]
 				}
 			},
@@ -31,7 +30,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/category/ReadCategories/1",
+					"raw": "http://localhost:8081/category/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -39,7 +38,6 @@
 					"port": "8081",
 					"path": [
 						"category",
-						"ReadCategories",
 						"1"
 					]
 				}
@@ -61,15 +59,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8081/category/CreateCategories",
+					"raw": "http://localhost:8081/category",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
-						"category",
-						"CreateCategories"
+						"category"
 					]
 				}
 			},
@@ -90,7 +87,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8081/category/UpdateCategories/2",
+					"raw": "http://localhost:8081/category/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -98,7 +95,6 @@
 					"port": "8081",
 					"path": [
 						"category",
-						"UpdateCategories",
 						"2"
 					]
 				}
@@ -111,7 +107,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/category/DeleteCategories/1",
+					"raw": "http://localhost:8081/category/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -119,7 +115,6 @@
 					"port": "8081",
 					"path": [
 						"category",
-						"DeleteCategories",
 						"1"
 					]
 				}

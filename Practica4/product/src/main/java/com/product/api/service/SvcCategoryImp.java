@@ -30,6 +30,7 @@ public class SvcCategoryImp implements SvcCategory {
 		if (categorySaved != null) {
 			if (categorySaved.getStatus() == 0) {
 				repo.activateCategory(categorySaved.getCategory_id());
+				return "category has been activated";
 			} else {
 				return "category already exist";
 			}
