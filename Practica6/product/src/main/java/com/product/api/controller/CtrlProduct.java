@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,6 +28,14 @@ public class CtrlProduct {
 	SvcProduct svc;
 	
 	// 1. Implementar método getProduct
+	/**
+	 * Regresa un endpoint del producto con el mismo ID que recibe como parametro.
+	 * @return un endpoint del producto con el mismo ID que recibe como parametro.
+	 */
+	@GetMapping("/{gtin}")
+	public ResponseEntity<Product> getProduct(@PathVariable String gtin) {
+		return new ResponseEntity<Product>(svc.getProduct(gtin), HttpStatus.OK);
+	}
 	
 	@PostMapping
 	public ResponseEntity<ApiResponse> createProduct(@Valid @RequestBody Product in, BindingResult bindingResult){
@@ -41,9 +50,15 @@ public class CtrlProduct {
 			throw new ApiException(HttpStatus.BAD_REQUEST, bindingResult.getAllErrors().get(0).getDefaultMessage());
 		return new ResponseEntity<>(svc.updateProduct(in, id),HttpStatus.OK);
 	}
-	
+
 	// 2. Implementar método updateProductStock
-	
+	@PutMapping("/{gtin}/stock/{stock}")
+	public ResponseEntity<ApiResponse> updateProductStock(@PathVariable("gtin") String gtin, @Valid @RequestBody Integer stock, BindingResult bindingResult){
+		if(bindingResult.hasErrors())
+			throw new ApiException(HttpStatus.BAD_REQUEST, bindingResult.getAllErrors().get(0).getDefaultMessage());
+		return new ResponseEntity<>(svc.updateProductStock(gtin, stock),HttpStatus.OK);
+	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ApiResponse> deleteProduct(@PathVariable("id") Integer id){
 		return new ResponseEntity<>(svc.deleteProduct(id), HttpStatus.OK);

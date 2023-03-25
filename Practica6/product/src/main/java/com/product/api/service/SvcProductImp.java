@@ -1,11 +1,14 @@
 package com.product.api.service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.product.api.dto.ApiResponse;
+import com.product.api.entity.Category;
 import com.product.api.entity.Product;
 import com.product.api.repository.RepoCategory;
 import com.product.api.repository.RepoProduct;
@@ -22,9 +25,10 @@ public class SvcProductImp implements SvcProduct {
 
 	@Override
 	public Product getProduct(String gtin) {
-		Product product = null; // sustituir null por la llamada al método implementado en el repositorio
+		//Product product = null; // sustituir null por la llamada al método implementado en el repositorio
+		Product product = repo.findByProductGtin(gtin);
 		if (product != null) {
-			product.setCategory(repoCategory.getCategory(product.getCategory_id()));
+			product.setCategory(repoCategory.findByCategoryId(product.getCategory_id()));
 			return product;
 		}else
 			throw new ApiException(HttpStatus.NOT_FOUND, "product does not exist");
@@ -39,7 +43,28 @@ public class SvcProductImp implements SvcProduct {
 	 */
 	@Override
 	public ApiResponse createProduct(Product in) {
-		return null;
+		Category catSaved = repoCategory.findByCategoryId(in.getCategory_id());
+		if (catSaved == null) {
+			throw new ApiException(HttpStatus.BAD_REQUEST, "category not found");
+		}
+		Product prodGtin = repo.findByProductGtin(in.getGtin());
+		Product prodName = repo.findByProductName(in.getGtin());
+		if (prodGtin != null) {
+			if (prodGtin.getStatus() == 0) {
+				repo.activateProduct(prodGtin.getProduct_id());
+				prodGtin = repo.findByProductGtin(in.getGtin());
+				repo.updateProduct(in.getProduct_id(), in.getGtin(), in.getProduct(), 
+					in.getDescription(), in.getPrice(), in.getStock(), in.getCategory_id());
+				return new ApiResponse("product activated");
+			}
+			throw new ApiException(HttpStatus.BAD_REQUEST, "product gtin already exist");
+		}
+		if (prodName != null) {
+			throw new ApiException(HttpStatus.BAD_REQUEST, "product name already exist");
+		}
+		repo.createProduct(in.getProduct_id(), in.getGtin(), in.getProduct(), 
+			in.getDescription(), in.getPrice(), in.getStock(), in.getCategory_id());
+		return new ApiResponse("product created");
 	}
 
 	@Override
