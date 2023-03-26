@@ -67,13 +67,25 @@ Dentro de la base de datos, creamos una tabla llamada `product` con columnas
 ```
 
 **Objetos de la clase Product**
+
 ```bash
 {
     "gtin": "Gtin1",
-    "product": "Nokia",
-    "description": "Kokia con 3 camaras",
+    "product": "Noquia",
+    "description": "Noquia con 3 camaras",
     "price": "200",
     "stock": "20",
     "category_id": "1"
+}
+```
+
+```bash
+{
+    "gtin": "Gtin2",
+    "product": "Audifonos Zonyk",
+    "description": "Zonyk AB300",
+    "price": "100",
+    "stock": "6",
+    "category_id": "2"
 }
 ```
