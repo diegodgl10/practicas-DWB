@@ -53,9 +53,7 @@ public class CtrlProduct {
 
 	// 2. Implementar método updateProductStock
 	@PutMapping("/{gtin}/stock/{stock}")
-	public ResponseEntity<ApiResponse> updateProductStock(@PathVariable("gtin") String gtin, @Valid @RequestBody Integer stock, BindingResult bindingResult){
-		if(bindingResult.hasErrors())
-			throw new ApiException(HttpStatus.BAD_REQUEST, bindingResult.getAllErrors().get(0).getDefaultMessage());
+	public ResponseEntity<ApiResponse> updateProductStock(@PathVariable("gtin") String gtin, @PathVariable("stock") Integer stock){
 		return new ResponseEntity<>(svc.updateProductStock(gtin, stock),HttpStatus.OK);
 	}
 

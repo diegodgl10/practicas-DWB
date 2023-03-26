@@ -15,32 +15,65 @@ La práctica fue programada y probada con
 
 Instrucciones de ejecución
 
-### Creacion de objetos de la clase Category
+### Creacion de la tabla Category
 
-1. Dentro de la base de datos, creamos una tabla llamada `category` con columnas
-   * *category_id* : tipo int, no puede ser nulo ni tiene valor predeterminado.
-   * *category* : tipo varchar(100), no puede ser nulo ni tiene valor predeterminado.
-   * *acronym* : tipo varchar(50), no puede ser nulo ni tiene valor predeterminado.
-   * *status* : tipo int, no puede ser nulo ni tiene valor predeterminado.
+Dentro de la base de datos, creamos una tabla llamada `category` con columnas
+   * *category_id* : llave de tipo int.
+   * *category* : de tipo varchar(100).
+   * *acronym* : de tipo varchar(50).
+   * *status* : de tipo int.
 
-| ![](phpMyAdmin.png)
+| ![](phpMyAdmin_category.png)
 |:----------------------:|
-| Configuracion en phpMyAdmin.
+| Configuracion de tabla `category` en phpMyAdmin.
 
-2. Ejecutamos el programa son el software de su preferencia
-3. Para probar cada metodo programado, se uso Postman, para facilitar las pruebas se agregado el archivo [PruebasP6](PruebasP6.json). Antes de realizar cualquier prueba se recimienda agregar al menos un par de elementos a la base de datos
+
+### Creacion de la tabla Product
+
+Dentro de la base de datos, creamos una tabla llamada `product` con columnas
+   * *product_id* : llave de tipo int.
+   * *gtin* : de tipo varchar(100).
+   * *product* : de tipo varchar(100).
+   * *description* : de tipo varchar(100).
+   * *price* : de tipo double.
+   * *stock* : de tipo int.
+   * *category_id* : de tipo int.
+   * *status* : de tipo int.
+
+| ![](phpMyAdmin_product.png)
+|:----------------------:|
+| Configuracion de tabla `product` en phpMyAdmin.
+
+
+### Ejecucion del software
+
+1. Ejecutamos el programa son el software de su preferencia (spring tool suite, NetBeans, etc.)
+2. Para probar cada metodo programado, se uso Postman, para facilitar las pruebas se agregado el archivo [PruebasP6](PruebasP6.json). Antes de realizar cualquier prueba se recomienda agregar al menos un par de elementos a la base de datos
+
+**Objetos de la clase Category**
+
 ```bash
 {
- "category": "Celulares",
- "acronym": "Cel"
+    "category": "Celulares",
+    "acronym": "Cel"
 }
 ```
    
 ```bash
 {
- "category": "Musica",
- "acronym": "Mus"
+    "category": "Musica",
+    "acronym": "Mus"
 }
 ```
 
-### Creacion de objetos de la clase Product
+**Objetos de la clase Product**
+```bash
+{
+    "gtin": "Gtin1",
+    "product": "Nokia",
+    "description": "Kokia con 3 camaras",
+    "price": "200",
+    "stock": "20",
+    "category_id": "1"
+}
+```
