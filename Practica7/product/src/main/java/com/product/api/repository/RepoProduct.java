@@ -1,5 +1,7 @@
 package com.product.api.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,12 +15,14 @@ import com.product.api.entity.Product;
 @Repository
 public interface RepoProduct extends JpaRepository<Product, Integer>{
 	
-	// 3. Implementar la firma de un método que permita consultar un producto por su código GTIN y con estatus 1
 	@Query(value = "SELECT * FROM product WHERE gtin = :gtin AND status = 1", nativeQuery = true)
 	Product findByProductGtin(@Param("gtin") String gtin);
 
 	@Query(value = "SELECT * FROM product WHERE product = :product AND status = 1", nativeQuery = true)
 	Product findByProductName(@Param("product") String product);
+
+	@Query(value = "SELECT * FROM product WHERE category_id = :category_id AND status = 1", nativeQuery = true)
+	List<Product> findByCategoryId(@Param("category_id") Integer category_id);
 	
 	@Modifying
 	@Transactional
@@ -59,14 +63,19 @@ public interface RepoProduct extends JpaRepository<Product, Integer>{
 	@Transactional
 	@Query(value = "UPDATE product SET status = 1 WHERE product_id = :product_id", nativeQuery = true)
 	void activateProduct(@Param("product_id") Integer product_id);
+
+	@Modifying
+	@Transactional
+	@Query(value ="UPDATE product SET stock = :stock WHERE gtin = :gtin AND status = 1", nativeQuery = true)
+	Integer updateProductStock(@Param("gtin") String gtin, @Param("stock") Integer stock);
+	
+	@Modifying
+	@Transactional
+	@Query(value ="UPDATE product SET category_id = :category_id WHERE gtin = :gtin AND status = 1", nativeQuery = true)
+	Integer updateProductCategory(@Param("gtin") String gtin, @Param("category_id") Integer category_id);
 	
 	@Modifying
 	@Transactional
 	@Query(value ="UPDATE product SET status = 0 WHERE product_id = :product_id AND status = 1", nativeQuery = true)
 	Integer deleteProduct(@Param("product_id") Integer product_id);
-	
-	@Modifying
-	@Transactional
-	@Query(value ="UPDATE product SET stock = :stock WHERE gtin = :gtin AND status = 1", nativeQuery = true)
-	Integer updateProductStock(@Param("gtin") String gtin, @Param("stock") Integer stock);
 }

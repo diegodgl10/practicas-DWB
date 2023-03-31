@@ -89,3 +89,14 @@ Dentro de la base de datos, creamos una tabla llamada `product` con columnas
     "category_id": "2"
 }
 ```
+
+```bash
+{
+    "gtin": "Gtin3",
+    "product": "Bocinas Xiayomi",
+    "description": "Xiayomi ABEC1",
+    "price": "130",
+    "stock": "10",
+    "category_id": "2"
+}
+```

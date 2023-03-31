@@ -1,6 +1,7 @@
 package com.product.api.service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -25,7 +26,6 @@ public class SvcProductImp implements SvcProduct {
 
 	@Override
 	public Product getProduct(String gtin) {
-		//Product product = null; // sustituir null por la llamada al método implementado en el repositorio
 		Product product = repo.findByProductGtin(gtin);
 		if (product != null) {
 			product.setCategory(repoCategory.findByCategoryId(product.getCategory_id()));
@@ -34,13 +34,11 @@ public class SvcProductImp implements SvcProduct {
 			throw new ApiException(HttpStatus.NOT_FOUND, "product does not exist");
 	}
 
-	/*
-	 * 4. Implementar el método createProduct considerando las siguientes validaciones:
-  		1. validar que la categoría del nuevo producto exista
-  		2. el código GTIN y el nombre del producto son únicos
-  		3. si al intentar realizar un nuevo registro ya existe un producto con el mismo GTIN pero tiene estatus 0, 
-  		   entonces se debe cambiar el estatus del producto existente a 1 y actualizar sus datos con los del nuevo registro
-	 */
+	@Override
+	public List<Product> getProducts(Integer category_id) {
+		return repo.findByCategoryId(category_id);
+	}
+
 	@Override
 	public ApiResponse createProduct(Product in) {
 		Category catSaved = repoCategory.findByCategoryId(in.getCategory_id());
@@ -87,14 +85,6 @@ public class SvcProductImp implements SvcProduct {
 	}
 
 	@Override
-	public ApiResponse deleteProduct(Integer id) {
-		if (repo.deleteProduct(id) > 0)
-			return new ApiResponse("product removed");
-		else
-			throw new ApiException(HttpStatus.BAD_REQUEST, "product cannot be deleted");
-	}
-
-	@Override
 	public ApiResponse updateProductStock(String gtin, Integer stock) {
 		Product product = getProduct(gtin);
 		if(stock > product.getStock())
@@ -102,5 +92,26 @@ public class SvcProductImp implements SvcProduct {
 		
 		repo.updateProductStock(gtin, product.getStock() - stock);
 		return new ApiResponse("product stock updated");
+	}
+
+	@Override
+	public ApiResponse deleteProduct(Integer id) {
+		if (repo.deleteProduct(id) > 0)
+			return new ApiResponse("product removed");
+		else
+			throw new ApiException(HttpStatus.BAD_REQUEST, "product cannot be deleted");
+	}
+
+	public ApiResponse updateProductCategory(String gtin, Integer category_id) {
+		Product product = getProduct(gtin);
+		if (product == null) {
+			throw new ApiException(HttpStatus.BAD_REQUEST, "product does not exist");
+		}
+		Category catSaved = repoCategory.findByCategoryId(category_id);
+		if (catSaved == null) {
+			throw new ApiException(HttpStatus.BAD_REQUEST, "category not found");
+		}
+		repo.updateProductCategory(gtin, category_id);
+		return new ApiResponse("product category updated");
 	}
 }

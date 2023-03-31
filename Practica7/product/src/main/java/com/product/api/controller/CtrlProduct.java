@@ -1,5 +1,7 @@
 package com.product.api.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,35 +28,67 @@ public class CtrlProduct {
 
 	@Autowired
 	SvcProduct svc;
-	
-	// 1. Implementar método getProduct
+
 	/**
-	 * Regresa un endpoint del producto con el mismo ID que recibe como parametro.
-	 * @return un endpoint del producto con el mismo ID que recibe como parametro.
+	 * Regersa una lista con los productos con el mismo ID de la categoria que recibe
+	 * como parametro.
+	 * @return una lista con los productos con el mismo ID de la categoria que recibe
+	 * como parametro.
+	 */
+	@GetMapping("/category/{category_id}")
+	public ResponseEntity<List<Product>> listProducts(@PathVariable Integer category_id) {
+		return new ResponseEntity<List<Product>>(svc.getProducts(category_id), HttpStatus.OK);
+	}
+	
+	/**
+	 * Regresa un endpoint del producto con el mismo gtin que recibe como parametro.
+	 * @return un endpoint del producto con el mismo gtin que recibe como parametro.
 	 */
 	@GetMapping("/{gtin}")
 	public ResponseEntity<Product> getProduct(@PathVariable String gtin) {
 		return new ResponseEntity<Product>(svc.getProduct(gtin), HttpStatus.OK);
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<ApiResponse> createProduct(@Valid @RequestBody Product in, BindingResult bindingResult){
+	public ResponseEntity<ApiResponse> createProduct(@Valid @RequestBody Product in,
+			BindingResult bindingResult){
 		if(bindingResult.hasErrors())
-			throw new ApiException(HttpStatus.BAD_REQUEST, bindingResult.getAllErrors().get(0).getDefaultMessage());
+			throw new ApiException(HttpStatus.BAD_REQUEST,
+					bindingResult.getAllErrors().get(0).getDefaultMessage());
 		return new ResponseEntity<>(svc.createProduct(in),HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<ApiResponse> updateProduct(@PathVariable("id") Integer id, @Valid @RequestBody Product in, BindingResult bindingResult){
+	public ResponseEntity<ApiResponse> updateProduct(@PathVariable("id") Integer id,
+			@Valid @RequestBody Product in, BindingResult bindingResult){
 		if(bindingResult.hasErrors())
-			throw new ApiException(HttpStatus.BAD_REQUEST, bindingResult.getAllErrors().get(0).getDefaultMessage());
+			throw new ApiException(HttpStatus.BAD_REQUEST,
+					bindingResult.getAllErrors().get(0).getDefaultMessage());
 		return new ResponseEntity<>(svc.updateProduct(in, id),HttpStatus.OK);
 	}
 
-	// 2. Implementar método updateProductStock
+	/**
+	 * Actualiza el stock de un producto
+	 * @param gtin el gtin del producto al que se actualizara el stock
+	 * @param stock la cantidad que se le rentara al stock actual del producto
+	 * @return un response entity
+	 */
 	@PutMapping("/{gtin}/stock/{stock}")
-	public ResponseEntity<ApiResponse> updateProductStock(@PathVariable("gtin") String gtin, @PathVariable("stock") Integer stock){
+	public ResponseEntity<ApiResponse> updateProductStock(@PathVariable("gtin") String gtin,
+			@PathVariable("stock") Integer stock){
 		return new ResponseEntity<>(svc.updateProductStock(gtin, stock),HttpStatus.OK);
+	}
+
+	/**
+	 * Actualiza el id de un producto
+	 * @param gtin el gtin del producto al que se actualizara el id de la categoria
+	 * @param category_id el nuevo id de la categoria del producto
+	 * @return un response entity
+	 */
+	@PutMapping("/{gtin}/category")
+	public ResponseEntity<ApiResponse> updateProductCategory(@PathVariable("gtin") String gtin, 
+			@Valid @RequestBody Integer category_id, BindingResult bindingResult){
+		return new ResponseEntity<>(svc.updateProductCategory(gtin, category_id),HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
