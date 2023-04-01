@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.product.api.dto.ApiResponse;
+import com.product.api.dto.DtoCategoryId;
 import com.product.api.entity.Product;
 import com.product.api.service.SvcProduct;
 import com.product.exception.ApiException;
@@ -87,8 +88,8 @@ public class CtrlProduct {
 	 */
 	@PutMapping("/{gtin}/category")
 	public ResponseEntity<ApiResponse> updateProductCategory(@PathVariable("gtin") String gtin, 
-			@Valid @RequestBody Integer category_id, BindingResult bindingResult){
-		return new ResponseEntity<>(svc.updateProductCategory(gtin, category_id),HttpStatus.OK);
+			@Valid @RequestBody DtoCategoryId category_id, BindingResult bindingResult){
+		return new ResponseEntity<>(svc.updateProductCategory(gtin, category_id.getCategory_id()),HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
